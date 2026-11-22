@@ -1,0 +1,26 @@
+<section>
+
+  <h1>Catálogo de productos</h1>
+
+  <header >
+        <p>Adquiere nuestros productos de alta calidad</p>
+  </header>
+
+  @for (producto of productos; track producto.codigo) {
+
+    <app-tarjeta-producto
+      [producto]="producto"
+      (agregar)="agregarCompra($event)">
+    </app-tarjeta-producto>
+
+  } @empty {
+    <p>No hay productos registrados.</p>
+  }
+
+
+  <h2>Resumen de compra</h2>
+
+  <p>Cantidad seleccionada: {{ cantidad() }}</p>
+  <p>Total acumulado: {{ total() }}</p>
+  <p>{{ mensaje() }}</p>
+</section>

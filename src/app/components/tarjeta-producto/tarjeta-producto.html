@@ -1,0 +1,27 @@
+
+<article>
+
+  <img [src]="producto().imagen"
+       [alt]="producto().nombre">
+
+  <h2>{{ producto().nombre }}</h2>
+
+  <p>{{ producto().precio | currency:'BOB':'symbol':'1.2-2' }}</p>
+
+  <p>{{ producto().categoria | uppercase }}</p>
+
+  @if (producto().stock > 0) {
+    <p>Existencias: {{ producto().stock }}</p>
+    <p>El producto está disponible</p>
+  } @else {
+    <p>El producto no está disponible</p>
+  }
+
+  <button
+    type="button"
+    [disabled]="producto().stock <= 0"
+    (click)="agregarProducto()">
+    Agregar a la compra
+  </button>
+
+</article>
