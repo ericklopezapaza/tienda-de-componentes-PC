@@ -3,6 +3,7 @@ import { Component, signal, computed } from '@angular/core';
 import { Producto } from '../../modelos/producto';
 import { TarjetaProducto } from '../../components/tarjeta-producto/tarjeta-producto';
 
+
 @Component({
   imports: [TarjetaProducto],
   selector: 'app-productos',
@@ -10,6 +11,43 @@ import { TarjetaProducto } from '../../components/tarjeta-producto/tarjeta-produ
   templateUrl: './productos.component.html',
 })
 export class ProductosComponent {
+
+
+  // Posición de cada categoría
+  posiciones = signal<Record<string, number>>({});
+
+  // Desplazar carrusel
+  moverCarrusel(
+    categoria: string,
+    direccion: 'izquierda' | 'derecha'
+  ): void {
+
+    const contenedor = document.getElementById(
+      'carrusel-' + categoria
+    );
+
+    if (!contenedor) return;
+
+    const desplazamiento = contenedor.clientWidth * 0.8;
+
+    contenedor.scrollBy({
+      left: direccion === 'derecha'
+        ? desplazamiento
+        : -desplazamiento,
+      behavior: 'smooth'
+    });
+
+    const actual = this.posiciones()[categoria] || 0;
+
+    this.posiciones.update(posiciones => ({
+      ...posiciones,
+      [categoria]: Math.max(
+        0,
+        actual + (direccion === 'derecha' ? 1 : -1)
+      )
+    }));
+
+  }
 
   mensaje = signal('');
   cantidad = signal(0);

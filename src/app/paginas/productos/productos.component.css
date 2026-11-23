@@ -1,49 +1,96 @@
 
-/* Encabezados de categorías */
-.categoria-titulo {
+/* Contenedor principal del carrusel */
+.carrusel-productos {
+  position: relative;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 15px;
-  padding-bottom: 15px;
-  border-bottom: 2px solid #e9ecef;
 }
 
-/* Buscador */
-.input-group .form-control {
-  border-left: none;
+/* Lista horizontal */
+.contenedor-productos {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  width: 100%;
+  padding: 10px 5px 20px;
 }
 
-.input-group-text {
-  border-right: none;
+/* Ocultar scrollbar en Chrome y Edge */
+.contenedor-productos::-webkit-scrollbar {
+  display: none;
 }
 
-.input-group .form-control:focus {
-  box-shadow: none;
-  border-color: #dee2e6;
+/* Cada producto */
+.elemento-carrusel {
+  flex: 0 0 calc(25% - 15px);
+  min-width: 240px;
 }
 
-/* Resumen de compra */
-.card {
-  border-radius: 12px;
-  overflow: hidden;
+/* Flechas */
+.flecha-carrusel {
+  position: absolute;
+  z-index: 5;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 42px;
+  height: 42px;
+  border: none;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #212529;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.2s;
 }
 
-.card-header {
-  border-bottom: none;
+/* Posición de las flechas */
+.flecha-carrusel.izquierda {
+  left: -15px;
 }
 
-/* Adaptación a celulares */
+.flecha-carrusel.derecha {
+  right: -15px;
+}
+
+/* Efectos */
+.flecha-carrusel:hover:not(:disabled) {
+  background: #0d6efd;
+  color: white;
+}
+
+.flecha-carrusel:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* Tablets */
+@media (max-width: 992px) {
+  .elemento-carrusel {
+    flex: 0 0 calc(50% - 10px);
+  }
+}
+
+/* Celulares */
 @media (max-width: 576px) {
-
-  .categoria-titulo {
-    align-items: flex-start;
-    flex-direction: column;
+  .elemento-carrusel {
+    flex: 0 0 85%;
   }
 
-  section.container {
-    padding-left: 18px;
-    padding-right: 18px;
+  .flecha-carrusel {
+    width: 35px;
+    height: 35px;
   }
 
+  .flecha-carrusel.izquierda {
+    left: -8px;
+  }
+
+  .flecha-carrusel.derecha {
+    right: -8px;
+  }
 }
