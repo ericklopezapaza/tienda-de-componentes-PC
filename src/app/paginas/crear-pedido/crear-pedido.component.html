@@ -1,1 +1,248 @@
-<p>crear-pedido works!</p>
+
+<div class="container py-4">
+
+  <!-- Título de la pantalla -->
+  <div class="mb-4">
+    <h2 class="fw-bold mb-1">Registrar pedido</h2>
+    <p class="text-secondary mb-0">
+      Completa tus datos y revisa los productos de tu compra.
+    </p>
+  </div>
+
+  <form [formGroup]="formularioPedido">
+
+    <div class="row g-4">
+
+      <!-- COLUMNA 1: DATOS DEL CLIENTE -->
+      <div class="col-12 col-lg-6">
+
+        <div class="card border-0 shadow-sm h-100">
+
+          <div class="card-header bg-white border-bottom py-3">
+            <h5 class="fw-bold mb-0">
+              <i class="bi bi-person-lines-fill me-2 text-primary"></i>
+              Datos del cliente
+            </h5>
+            <small class="text-secondary">
+              Información para procesar tu pedido.
+            </small>
+          </div>
+
+          <div class="card-body p-4">
+
+            <!-- Nombre completo -->
+            <div class="mb-3">
+              <label class="form-label fw-semibold">
+                Nombre completo
+              </label>
+
+              <input
+                type="text"
+                class="form-control form-control-lg"
+                [class.is-invalid]="formularioPedido.controls.nombreCliente.invalid && formularioPedido.controls.nombreCliente.touched"
+                formControlName="nombreCliente"
+                placeholder="Ingrese su nombre completo"
+              >
+
+              <!-- Mensajes de validación del nombre -->
+              @if (formularioPedido.controls.nombreCliente.touched) {
+                @if (formularioPedido.controls.nombreCliente.hasError('required')) {
+                  <div class="invalid-feedback d-block">
+                    El nombre completo es obligatorio.
+                  </div>
+                } @else if (formularioPedido.controls.nombreCliente.hasError('minlength')) {
+                  <div class="invalid-feedback d-block">
+                    El nombre debe tener al menos 3 caracteres.
+                  </div>
+                }
+              }
+            </div>
+
+            <!-- Carnet de identidad -->
+            <div class="mb-3">
+              <label class="form-label fw-semibold">
+                Carnet de identidad
+              </label>
+
+              <input
+                type="text"
+                class="form-control form-control-lg"
+                [class.is-invalid]="formularioPedido.controls.ci.invalid && formularioPedido.controls.ci.touched"
+                formControlName="ci"
+                placeholder="Número de CI"
+              >
+
+              <!-- Mensajes de validación del CI -->
+              @if (formularioPedido.controls.ci.touched) {
+                @if (formularioPedido.controls.ci.hasError('required')) {
+                  <div class="invalid-feedback d-block">
+                    El carnet de identidad es obligatorio.
+                  </div>
+                } @else if (formularioPedido.controls.ci.hasError('pattern')) {
+                  <div class="invalid-feedback d-block">
+                    El CI debe contener únicamente números.
+                  </div>
+                }
+              }
+            </div>
+
+            <!-- Teléfono -->
+            <div class="mb-3">
+              <label class="form-label fw-semibold">
+                Teléfono
+              </label>
+
+              <input
+                type="tel"
+                class="form-control form-control-lg"
+                [class.is-invalid]="formularioPedido.controls.telefono.invalid && formularioPedido.controls.telefono.touched"
+                formControlName="telefono"
+                placeholder="Número de contacto"
+              >
+
+              <!-- Mensajes de validación del teléfono -->
+              @if (formularioPedido.controls.telefono.touched) {
+                @if (formularioPedido.controls.telefono.hasError('required')) {
+                  <div class="invalid-feedback d-block">
+                    El teléfono es obligatorio.
+                  </div>
+                } @else if (formularioPedido.controls.telefono.hasError('pattern')) {
+                  <div class="invalid-feedback d-block">
+                    El teléfono debe contener entre 7 y 8 dígitos numéricos.
+                  </div>
+                }
+              }
+            </div>
+
+            <!-- Dirección -->
+            <div class="mb-3">
+              <label class="form-label fw-semibold">
+                Dirección de entrega
+              </label>
+
+              <textarea
+                class="form-control"
+                [class.is-invalid]="formularioPedido.controls.direccion.invalid && formularioPedido.controls.direccion.touched"
+                formControlName="direccion"
+                rows="3"
+                placeholder="Ingrese su dirección"
+              ></textarea>
+
+              <!-- Mensaje de validación de la dirección -->
+              @if (formularioPedido.controls.direccion.touched && formularioPedido.controls.direccion.hasError('required')) {
+                <div class="invalid-feedback d-block">
+                  La dirección de entrega es obligatoria.
+                </div>
+              }
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- COLUMNA 2: RESUMEN DEL PEDIDO -->
+      <div class="col-12 col-lg-6">
+
+        <div class="card border-0 shadow-sm h-100">
+
+          <div class="card-header bg-white border-bottom py-3">
+            <h5 class="fw-bold mb-0">
+              <i class="bi bi-cart3 me-2 text-primary"></i>
+              Resumen del pedido
+            </h5>
+            <small class="text-secondary">
+              Productos seleccionados en tu carrito.
+            </small>
+          </div>
+
+          <div class="card-body p-4">
+
+            <!-- Comprobar si existen productos en el carrito -->
+            @if (carrito().length > 0) {
+
+              <div class="table-responsive">
+
+                <table class="table table-hover align-middle">
+
+                  <thead class="table-light">
+                    <tr>
+                      <th>Producto</th>
+                      <th class="text-center">Cantidad</th>
+                      <th class="text-end">Subtotal</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+
+                    <!-- Recorrer los productos del carrito -->
+                    @for (item of carrito(); track item.producto.codigo) {
+                      <tr>
+                        <td class="fw-semibold">
+                          {{ item.producto.nombre }}
+                        </td>
+
+                        <td class="text-center">
+                          <span class="badge bg-light text-dark border">
+                            {{ item.cantidad }}
+                          </span>
+                        </td>
+
+                        <td class="text-end text-nowrap">
+                          {{ item.producto.precio * item.cantidad | currency:'BOB':'symbol':'1.2-2' }}
+                        </td>
+                      </tr>
+                    }
+
+                  </tbody>
+
+                  <tfoot class="table-light">
+                    <tr>
+                      <th>Total</th>
+                      <th class="text-center">
+                        {{ cantidadTotal() }}
+                      </th>
+                      <th class="text-end text-nowrap">
+                        {{ totalPedido() | currency:'BOB':'symbol':'1.2-2' }}
+                      </th>
+                    </tr>
+                  </tfoot>
+
+                </table>
+
+              </div>
+
+              <!-- Total general -->
+              <div class="bg-light rounded-3 p-3 mt-4">
+
+                <div class="d-flex justify-content-between align-items-center">
+                  <span class="text-secondary fw-semibold">
+                    Total del pedido
+                  </span>
+
+                  <h3 class="fw-bold text-primary mb-0">
+                    {{ totalPedido() | currency:'BOB':'symbol':'1.2-2' }}
+                  </h3>
+                </div>
+
+              </div>
+
+            } @else {
+
+              <!-- Mensaje cuando el carrito está vacío -->
+              <div class="alert alert-warning mb-0">
+                No hay productos en el carrito. Agrega productos antes de registrar un pedido.
+              </div>
+
+            }
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </form>
+
+</div>

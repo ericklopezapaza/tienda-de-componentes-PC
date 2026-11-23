@@ -1,7 +1,8 @@
+
 export interface DetallePedido {
   codigodetalle: number;
-  NombreProducto: string;
-  PrecioUnitario: number;
+  nombreProducto: string;
+  precioUnitario: number;
   cantidad: number;
   subtotal: number;
 }
