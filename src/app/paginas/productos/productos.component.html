@@ -1,26 +1,164 @@
-<section>
 
-  <h1>Catálogo de productos</h1>
+<section class="container py-5">
 
-  <header >
-        <p>Adquiere nuestros productos de alta calidad</p>
-  </header>
+  <!-- Encabezado -->
+  <div class="text-center mb-5">
 
-  @for (producto of productos; track producto.codigo) {
+    <span class="badge bg-primary mb-3 px-3 py-2">
+      TIENDA DE COMPONENTES PC
+    </span>
 
-    <app-tarjeta-producto
-      [producto]="producto"
-      (agregar)="agregarCompra($event)">
-    </app-tarjeta-producto>
+    <h1 class="display-5 fw-bold">
+      Catálogo de productos
+    </h1>
+
+    <p class="text-secondary fs-5">
+      Encuentra los mejores componentes para tu computadora.
+    </p>
+
+  </div>
+
+
+  <!-- Buscador -->
+  <div class="row justify-content-center mb-5">
+
+    <div class="col-12 col-md-8 col-lg-6">
+
+      <div class="input-group input-group-lg shadow-sm">
+
+        <span class="input-group-text bg-white">
+          <i class="bi bi-search"></i>
+        </span>
+
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Buscar productos o categorías..."
+          (input)="buscarProducto($event)"
+        >
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- Catálogo organizado por categorías -->
+  @for (grupo of categoriasProductos(); track grupo.nombre) {
+
+    <div class="mb-5">
+
+      <!-- Título de categoría -->
+      <div class="categoria-titulo mb-4">
+
+        <h2 class="fw-bold mb-0">
+          {{ grupo.nombre }}
+        </h2>
+
+        <span class="badge bg-primary rounded-pill">
+          {{ grupo.productos.length }} productos
+        </span>
+
+      </div>
+
+
+      <!-- Productos de la categoría -->
+      <div class="row g-4">
+
+        @for (producto of grupo.productos; track producto.codigo) {
+
+          <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+
+            <app-tarjeta-producto
+              [producto]="producto"
+              (agregar)="agregarCompra($event)">
+            </app-tarjeta-producto>
+
+          </div>
+
+        }
+
+      </div>
+
+    </div>
 
   } @empty {
-    <p>No hay productos registrados.</p>
+
+    <!-- Cuando no existen resultados -->
+    <div class="text-center py-5">
+
+      <i class="bi bi-search display-3 text-secondary"></i>
+
+      <h3 class="fw-bold mt-3">
+        No encontramos productos
+      </h3>
+
+      <p class="text-secondary">
+        Intenta buscar con otro nombre o categoría.
+      </p>
+
+    </div>
+
   }
 
 
-  <h2>Resumen de compra</h2>
+  <!-- Resumen de compra -->
+  <div class="card shadow-sm border-0 mt-5">
 
-  <p>Cantidad seleccionada: {{ cantidad() }}</p>
-  <p>Total acumulado: {{ total() }}</p>
-  <p>{{ mensaje() }}</p>
+    <div class="card-header bg-dark text-white py-3">
+
+      <h3 class="mb-0 fs-4">
+        <i class="bi bi-cart3 me-2"></i>
+        Resumen de compra
+      </h3>
+
+    </div>
+
+    <div class="card-body p-4">
+
+      <div class="row g-3">
+
+        <div class="col-12 col-md-4">
+
+          <p class="text-secondary mb-1">
+            Cantidad seleccionada
+          </p>
+
+          <h4 class="fw-bold">
+            {{ cantidad() }} productos
+          </h4>
+
+        </div>
+
+        <div class="col-12 col-md-4">
+
+          <p class="text-secondary mb-1">
+            Total acumulado
+          </p>
+
+          <h4 class="fw-bold text-success">
+            Bs. {{ total() }}
+          </h4>
+
+        </div>
+
+        <div class="col-12 col-md-4">
+
+          <p class="text-secondary mb-1">
+            Última operación
+          </p>
+
+          <p class="fw-semibold mb-0">
+            {{ mensaje() || 'Sin productos seleccionados' }}
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
 </section>

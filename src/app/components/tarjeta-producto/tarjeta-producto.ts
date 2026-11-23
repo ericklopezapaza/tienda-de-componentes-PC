@@ -1,6 +1,7 @@
+
 import { Component, input, output } from '@angular/core';
 import { Producto } from '../../modelos/producto';
-import { CurrencyPipe, UpperCasePipe} from '@angular/common';
+import { CurrencyPipe, UpperCasePipe } from '@angular/common';
 
 @Component({
   imports: [CurrencyPipe, UpperCasePipe],
@@ -10,13 +11,15 @@ import { CurrencyPipe, UpperCasePipe} from '@angular/common';
 })
 export class TarjetaProducto {
 
-  // Recibe el objeto completo del producto desde el componente padre
+  // Recibe el producto del componente padre
   producto = input.required<Producto>();
 
   // Envía el producto seleccionado al componente padre
   agregar = output<Producto>();
 
-  agregarProducto() : void { 
+  // Agregar producto a la compra
+  agregarProducto(): void {
+
     const seleccionado = this.producto();
 
     if (seleccionado.stock > 0) {

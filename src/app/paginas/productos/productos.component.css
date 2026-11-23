@@ -1,0 +1,49 @@
+
+/* Encabezados de categorías */
+.categoria-titulo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #e9ecef;
+}
+
+/* Buscador */
+.input-group .form-control {
+  border-left: none;
+}
+
+.input-group-text {
+  border-right: none;
+}
+
+.input-group .form-control:focus {
+  box-shadow: none;
+  border-color: #dee2e6;
+}
+
+/* Resumen de compra */
+.card {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.card-header {
+  border-bottom: none;
+}
+
+/* Adaptación a celulares */
+@media (max-width: 576px) {
+
+  .categoria-titulo {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  section.container {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+}
