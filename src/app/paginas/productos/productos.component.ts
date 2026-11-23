@@ -26,7 +26,7 @@ export class ProductosComponent {
       precio: 1200,
       stock: 10,
       categoria: 'Procesadores',
-      imagen: 'https://m.media-amazon.com/images/W/BW_MEDIAX_AVIF_MEASUREMENT_1306696-T4/images/I/51So7GoGvxL._AC_SL1384_.jpg'
+      imagen: 'images/Procesador AMD.jpg'
     },
 
     {
@@ -36,7 +36,7 @@ export class ProductosComponent {
       precio: 3200,
       stock: 5,
       categoria: 'Tarjetas gráficas',
-      imagen: 'https://m.media-amazon.com/images/W/BW_MEDIAX_AVIF_MEASUREMENT_1306696-T4/images/I/71t1ClD2EtL._AC_SL1500_.jpg'
+      imagen: 'images/tarjeta grafica.jpeg'
     },
 
     {
@@ -57,6 +57,96 @@ export class ProductosComponent {
       stock: 5,
       categoria: 'Tarjetas gráficas',
       imagen: 'images/TG rtx 5070 Ti Edicion frieren.png'
+    },
+
+    {
+      codigo: 5,
+      nombre: 'ASUS TUF GAMING B550M-PLUS WIFI II',
+      descripcion: 'MotherBoard (Tarjeta madre).',
+      precio: 8200,
+      stock: 5,
+      categoria: 'Placas madre',
+      imagen: 'images/MotherB1.jpeg'
+    },
+
+    {
+      codigo: 6,
+      nombre: 'GIGABYTE B550M DS3H AC',
+      descripcion: 'MotherBoard (Tarjeta madre).',
+      precio: 8200,
+      stock: 5,
+      categoria: 'Placas madre',
+      imagen: 'images/MotherB2.jpeg'
+    },
+
+    {
+      codigo: 7,
+      nombre: 'ASUS PRIME A520M-K',
+      descripcion: 'MotherBoard (Tarjeta madre).',
+      precio: 8200,
+      stock: 5,
+      categoria: 'Placas madre',
+      imagen: 'images/MotherB3.jpeg'
+    },
+
+    {
+      codigo: 8,
+      nombre: 'TeamGroup T-Create DDR4 16GB 2666MT/s CL19',
+      descripcion: 'paquete de dos memorias dedicadas en dual chanel .',
+      precio: 8200,
+      stock: 5,
+      categoria: 'Memorias RAM',
+      imagen: 'images/RAM.jpeg'
+    },
+
+    {
+      codigo: 9,
+      nombre: 'Hiksemi Armor Blue DDR4 16GB (1x16GB) 3200MHz',
+      descripcion: 'Memoria RAM de alta compatibilidad para equipos de gama media y alta.',
+      precio: 8200,
+      stock: 5,
+      categoria: 'Memorias RAM',
+      imagen: 'images/RAM2.jpeg'
+    },
+
+    {
+      codigo: 10,
+      nombre: 'Kingston FURY Beast DDR4 16GB',
+      descripcion: 'Memoria Ram de 16GB.',
+      precio: 8200,
+      stock: 5,
+      categoria: 'Memorias RAM',
+      imagen: 'images/RAM3.jpeg'
+    },
+
+    {
+      codigo: 11,
+      nombre: 'Corsair Vengeance LPX DDR4 16GB (2x8GB) 3200MHz CL16',
+      descripcion: 'Paquete que contiene 2 memorias RAM de 8GB C/U .',
+      precio: 8200,
+      stock: 5,
+      categoria: 'Memorias RAM',
+      imagen: 'images/RAM4.jpeg'
+    },
+
+    {
+      codigo: 12,
+      nombre: 'Tarjeta Grafica RTx 5060',
+      descripcion: 'Tarjeta gráfica NVIDIA de 12 GB.',
+      precio: 8200,
+      stock: 5,
+      categoria: 'Tarjetas gráficas',
+      imagen: 'images/TG rtx 5060.png'
+    },
+
+    {
+      codigo: 13,
+      nombre: 'Procesador Intel@Core i9-13900k',
+      descripcion: 'Procesador de 6 núcleos y 12 hilos de la marca intel.',
+      precio: 1200,
+      stock: 10,
+      categoria: 'Procesadores',
+      imagen: 'images/procesor intel core i9-13900k.jpeg'
     },
 
   ];
