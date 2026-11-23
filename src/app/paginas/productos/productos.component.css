@@ -1,12 +1,121 @@
 
-/* Contenedor principal del carrusel */
+/* =====================================
+   TÍTULOS DE CATEGORÍAS
+===================================== */
+
+.categoria-titulo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #e9ecef;
+}
+
+
+/* =====================================
+   BUSCADOR
+===================================== */
+
+.input-group .form-control {
+  border-left: none;
+}
+
+.input-group-text {
+  border-right: none;
+}
+
+.input-group .form-control:focus {
+  box-shadow: none;
+  border-color: #dee2e6;
+}
+
+
+/* =====================================
+   BURBUJA FLOTANTE DEL CARRITO
+===================================== */
+
+.burbuja-carrito {
+  position: fixed;
+  right: 30px;
+  bottom: 30px;
+
+  width: 65px;
+  height: 65px;
+
+  border: none;
+  border-radius: 50%;
+
+  background: #0d6efd;
+  color: white;
+
+  font-size: 27px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  z-index: 1030;
+
+  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.3);
+
+  transition: transform 0.2s, background 0.2s;
+}
+
+.burbuja-carrito:hover {
+  background: #0b5ed7;
+  transform: scale(1.08);
+}
+
+.burbuja-carrito:focus-visible {
+  outline: 3px solid #212529;
+  outline-offset: 4px;
+}
+
+
+/* Contador de productos */
+
+.contador-carrito {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+
+  min-width: 25px;
+  height: 25px;
+
+  padding: 0 6px;
+
+  border-radius: 50%;
+
+  background: #dc3545;
+  color: white;
+
+  font-size: 13px;
+  font-weight: bold;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 2px solid white;
+}
+
+
+/* =====================================
+   CARRUSEL DE PRODUCTOS
+===================================== */
+
 .carrusel-productos {
   position: relative;
   display: flex;
   align-items: center;
 }
 
+
 /* Lista horizontal */
+
 .contenedor-productos {
   display: flex;
   gap: 20px;
@@ -17,66 +126,340 @@
   padding: 10px 5px 20px;
 }
 
-/* Ocultar scrollbar en Chrome y Edge */
+
+/* Ocultar barra de desplazamiento */
+
 .contenedor-productos::-webkit-scrollbar {
   display: none;
 }
 
+
 /* Cada producto */
+
 .elemento-carrusel {
   flex: 0 0 calc(25% - 15px);
   min-width: 240px;
 }
 
-/* Flechas */
+
+/* =====================================
+   FLECHAS DEL CARRUSEL
+===================================== */
+
 .flecha-carrusel {
   position: absolute;
   z-index: 5;
   top: 50%;
   transform: translateY(-50%);
+
   width: 42px;
   height: 42px;
+
   border: none;
   border-radius: 50%;
+
   background: #ffffff;
   color: #212529;
-  box-shadow: 0 3px 12px rgba(0,0,0,0.18);
+
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.18);
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   cursor: pointer;
   transition: 0.2s;
 }
 
-/* Posición de las flechas */
+
+/* Posición izquierda */
+
 .flecha-carrusel.izquierda {
   left: -15px;
 }
+
+
+/* Posición derecha */
 
 .flecha-carrusel.derecha {
   right: -15px;
 }
 
-/* Efectos */
+
+/* Efecto al pasar el mouse */
+
 .flecha-carrusel:hover:not(:disabled) {
   background: #0d6efd;
   color: white;
 }
+
+
+/* Flecha deshabilitada */
 
 .flecha-carrusel:disabled {
   opacity: 0.35;
   cursor: not-allowed;
 }
 
-/* Tablets */
+
+/* =====================================
+   FONDO OSCURO DEL CARRITO
+===================================== */
+
+.carrito-overlay {
+  position: fixed;
+  inset: 0;
+
+  background: rgba(0, 0, 0, 0.5);
+
+  z-index: 1040;
+}
+
+
+/* =====================================
+   SIDEBAR DEL CARRITO
+===================================== */
+
+.carrito-sidebar {
+  position: fixed;
+
+  top: 0;
+  right: 0;
+
+  width: 420px;
+  max-width: 100%;
+
+  height: 100vh;
+  height: 100dvh;
+
+  background: #ffffff;
+
+  z-index: 1050;
+
+  display: flex;
+  flex-direction: column;
+
+  box-shadow: -5px 0 20px rgba(0, 0, 0, 0.15);
+
+  animation: abrirCarrito 0.25s ease;
+}
+
+
+/* Animación de entrada */
+
+@keyframes abrirCarrito {
+
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+
+}
+
+
+/* =====================================
+   ENCABEZADO DEL CARRITO
+===================================== */
+
+.carrito-header {
+  padding: 22px;
+
+  border-bottom: 1px solid #dee2e6;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+/* Botón cerrar */
+
+.btn-cerrar {
+  width: 38px;
+  height: 38px;
+}
+
+
+/* =====================================
+   CONTENIDO DEL CARRITO
+===================================== */
+
+.carrito-contenido {
+  flex: 1;
+
+  overflow-y: auto;
+
+  padding: 20px;
+}
+
+
+/* =====================================
+   PRODUCTOS DENTRO DEL CARRITO
+===================================== */
+
+.carrito-item {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 15px 0;
+
+  border-bottom: 1px solid #eeeeee;
+}
+
+
+/* Imagen */
+
+.carrito-imagen {
+  width: 75px;
+  height: 75px;
+
+  object-fit: contain;
+
+  background: #f8f9fa;
+
+  border-radius: 8px;
+
+  padding: 5px;
+
+  flex-shrink: 0;
+}
+
+
+/* Información */
+
+.carrito-info {
+  flex: 1;
+  min-width: 0;
+}
+
+
+/* Nombre del producto */
+
+.carrito-info h6 {
+  font-size: 0.9rem;
+  overflow-wrap: anywhere;
+}
+
+
+/* Botón eliminar */
+
+.btn-eliminar {
+  flex-shrink: 0;
+}
+
+
+/* =====================================
+   CONTROLES DE CANTIDAD
+===================================== */
+
+.controles-cantidad {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  margin: 8px 0;
+}
+
+.btn-cantidad {
+  width: 28px;
+  height: 28px;
+
+  border: 1px solid #0d6efd;
+  border-radius: 6px;
+
+  background: white;
+  color: #0d6efd;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.btn-cantidad:hover:not(:disabled) {
+  background: #0d6efd;
+  color: white;
+}
+
+.btn-cantidad:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.cantidad-producto {
+  min-width: 22px;
+
+  text-align: center;
+
+  font-weight: bold;
+  font-size: 15px;
+}
+
+
+/* =====================================
+   CARRITO VACÍO
+===================================== */
+
+.carrito-vacio {
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+
+  padding: 20px;
+}
+
+
+/* =====================================
+   PIE DEL CARRITO
+===================================== */
+
+.carrito-footer {
+  padding: 22px;
+
+  border-top: 1px solid #dee2e6;
+
+  background: #ffffff;
+}
+
+
+/* =====================================
+   RESPONSIVE - TABLETS
+===================================== */
+
 @media (max-width: 992px) {
+
   .elemento-carrusel {
     flex: 0 0 calc(50% - 10px);
   }
+
 }
 
-/* Celulares */
+
+/* =====================================
+   RESPONSIVE - CELULARES
+===================================== */
+
 @media (max-width: 576px) {
+
+  .categoria-titulo {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
   .elemento-carrusel {
     flex: 0 0 85%;
   }
@@ -93,4 +476,19 @@
   .flecha-carrusel.derecha {
     right: -8px;
   }
+
+  .burbuja-carrito {
+    width: 58px;
+    height: 58px;
+
+    right: 18px;
+    bottom: 18px;
+
+    font-size: 24px;
+  }
+
+  .carrito-sidebar {
+    width: 100%;
+  }
+
 }

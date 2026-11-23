@@ -3,6 +3,11 @@ import { Component, signal, computed } from '@angular/core';
 import { Producto } from '../../modelos/producto';
 import { TarjetaProducto } from '../../components/tarjeta-producto/tarjeta-producto';
 
+// Interfaz para los productos del carrito
+interface ItemCarrito {
+  producto: Producto;
+  cantidad: number;
+}
 
 @Component({
   imports: [TarjetaProducto],
@@ -12,11 +17,37 @@ import { TarjetaProducto } from '../../components/tarjeta-producto/tarjeta-produ
 })
 export class ProductosComponent {
 
+  // CARRITO DE COMPRAS
 
-  // Posición de cada categoría
+  carrito = signal<ItemCarrito[]>([]);
+
+  // Mostrar u ocultar el carrito lateral
+  carritoAbierto = signal(false);
+
+  // Detectar cambios en el catálogo
+  actualizacionCatalogo = signal(0);
+
+  // Cantidad total de unidades en el carrito
+  cantidadCarrito = computed(() =>
+    this.carrito().reduce(
+      (total, item) => total + item.cantidad,
+      0
+    )
+  );
+
+  // Total de la compra
+  totalCarrito = computed(() =>
+    this.carrito().reduce(
+      (total, item) =>
+        total + item.producto.precio * item.cantidad,
+      0
+    )
+  );
+
+  // CARRUSEL DE PRODUCTOS
+
   posiciones = signal<Record<string, number>>({});
 
-  // Desplazar carrusel
   moverCarrusel(
     categoria: string,
     direccion: 'izquierda' | 'derecha'
@@ -46,17 +77,16 @@ export class ProductosComponent {
         actual + (direccion === 'derecha' ? 1 : -1)
       )
     }));
-
   }
 
-  mensaje = signal('');
-  cantidad = signal(0);
-  total = signal(0);
+  // BUSCADOR
 
-  // Buscador
   busqueda = signal('');
 
+  // LISTA DE PRODUCTOS
+
   productos: Producto[] = [
+
     {
       codigo: 1,
       nombre: 'Procesador AMD Ryzen 5 5600',
@@ -130,7 +160,7 @@ export class ProductosComponent {
     {
       codigo: 8,
       nombre: 'TeamGroup T-Create DDR4 16GB 2666MT/s CL19',
-      descripcion: 'paquete de dos memorias dedicadas en dual chanel .',
+      descripcion: 'Paquete de dos memorias dedicadas en dual channel.',
       precio: 8200,
       stock: 5,
       categoria: 'Memorias RAM',
@@ -150,7 +180,7 @@ export class ProductosComponent {
     {
       codigo: 10,
       nombre: 'Kingston FURY Beast DDR4 16GB',
-      descripcion: 'Memoria Ram de 16GB.',
+      descripcion: 'Memoria RAM de 16GB.',
       precio: 8200,
       stock: 5,
       categoria: 'Memorias RAM',
@@ -160,7 +190,7 @@ export class ProductosComponent {
     {
       codigo: 11,
       nombre: 'Corsair Vengeance LPX DDR4 16GB (2x8GB) 3200MHz CL16',
-      descripcion: 'Paquete que contiene 2 memorias RAM de 8GB C/U .',
+      descripcion: 'Paquete que contiene 2 memorias RAM de 8GB C/U.',
       precio: 8200,
       stock: 5,
       categoria: 'Memorias RAM',
@@ -189,8 +219,12 @@ export class ProductosComponent {
 
   ];
 
-  // Filtrar productos y organizarlos por categorías
+  // FILTRAR Y AGRUPAR POR CATEGORÍAS
+
   categoriasProductos = computed(() => {
+
+    // Detectar modificaciones en el stock
+    this.actualizacionCatalogo();
 
     const termino = this.busqueda().trim().toLowerCase();
 
@@ -220,7 +254,8 @@ export class ProductosComponent {
 
   });
 
-  // Actualizar buscador
+  // ACTUALIZAR BUSCADOR
+
   buscarProducto(event: Event): void {
 
     const valor = (event.target as HTMLInputElement).value;
@@ -229,35 +264,176 @@ export class ProductosComponent {
 
   }
 
-  // Agregar producto a la compra
+  // ACTUALIZAR STOCK DEL CATÁLOGO
+
+  private modificarStock(codigo: number, cambio: number): void {
+
+    // Crear una nueva referencia del producto actualizado
+    this.productos = this.productos.map(producto =>
+      producto.codigo === codigo
+        ? { ...producto, stock: producto.stock + cambio }
+        : producto
+    );
+
+    const productoActualizado = this.productos.find(
+      producto => producto.codigo === codigo
+    );
+
+    if (!productoActualizado) return;
+
+    // Actualizar la referencia del producto en el carrito
+    this.carrito.update(items =>
+      items.map(item =>
+        item.producto.codigo === codigo
+          ? { ...item, producto: productoActualizado }
+          : item
+      )
+    );
+
+    // Notificar el cambio al catálogo
+    this.actualizacionCatalogo.update(valor => valor + 1);
+  }
+
+  // AGREGAR PRODUCTOS AL CARRITO
+
   agregarCompra(producto: Producto): void {
 
     const productoCatalogo = this.productos.find(
       p => p.codigo === producto.codigo
     );
 
-    if (productoCatalogo && productoCatalogo.stock > 0) {
+    if (!productoCatalogo || productoCatalogo.stock <= 0) {
+      return;
+    }
 
-      productoCatalogo.stock--;
+    // Descontar una unidad del stock
+    this.modificarStock(producto.codigo, -1);
 
-      this.cantidad.set(this.cantidad() + 1);
+    const productoActualizado = this.productos.find(
+      p => p.codigo === producto.codigo
+    );
 
-      this.total.set(
-        this.total() + productoCatalogo.precio
-      );
+    if (!productoActualizado) return;
 
-      this.mensaje.set(
-        'Agregaste: ' + productoCatalogo.nombre
+    const existente = this.carrito().find(
+      item => item.producto.codigo === producto.codigo
+    );
+
+    if (existente) {
+
+      // Aumentar la cantidad del producto existente
+      this.carrito.update(items =>
+        items.map(item =>
+          item.producto.codigo === producto.codigo
+            ? { ...item, cantidad: item.cantidad + 1 }
+            : item
+        )
       );
 
     } else {
 
-      this.mensaje.set(
-        'Producto agotado: ' + producto.nombre
-      );
+      // Agregar un nuevo producto
+      this.carrito.update(items => [
+        ...items,
+        {
+          producto: productoActualizado,
+          cantidad: 1
+        }
+      ]);
 
     }
+  }
 
+  // AUMENTAR CANTIDAD
+
+  aumentarCantidad(codigo: number): void {
+
+    const producto = this.productos.find(
+      p => p.codigo === codigo
+    );
+
+    if (!producto || producto.stock <= 0) {
+      return;
+    }
+
+    // Descontar una unidad del stock
+    this.modificarStock(codigo, -1);
+
+    // Aumentar la cantidad en el carrito
+    this.carrito.update(items =>
+      items.map(item =>
+        item.producto.codigo === codigo
+          ? { ...item, cantidad: item.cantidad + 1 }
+          : item
+      )
+    );
+  }
+
+  // REDUCIR CANTIDAD
+
+  reducirCantidad(codigo: number): void {
+
+    const item = this.carrito().find(
+      item => item.producto.codigo === codigo
+    );
+
+    if (!item) return;
+
+    // Devolver una unidad al stock
+    this.modificarStock(codigo, 1);
+
+    // Reducir cantidad o eliminar si llega a cero
+    this.carrito.update(items =>
+      items
+        .map(item =>
+          item.producto.codigo === codigo
+            ? { ...item, cantidad: item.cantidad - 1 }
+            : item
+        )
+        .filter(item => item.cantidad > 0)
+    );
+  }
+
+  // ELIMINAR PRODUCTO COMPLETO
+
+  quitarProducto(codigo: number): void {
+
+    const item = this.carrito().find(
+      item => item.producto.codigo === codigo
+    );
+
+    if (!item) return;
+
+    // Devolver todas las unidades al stock
+    this.modificarStock(codigo, item.cantidad);
+
+    // Eliminar el producto del carrito
+    this.carrito.update(items =>
+      items.filter(item => item.producto.codigo !== codigo)
+    );
+  }
+
+  // VACIAR CARRITO
+
+  vaciarCarrito(): void {
+
+    // Devolver todas las unidades al catálogo
+    this.carrito().forEach(item => {
+      this.modificarStock(item.producto.codigo, item.cantidad);
+    });
+
+    // Vaciar el carrito
+    this.carrito.set([]);
+  }
+
+  // ABRIR Y CERRAR CARRITO
+
+  abrirCarrito(): void {
+    this.carritoAbierto.set(true);
+  }
+
+  cerrarCarrito(): void {
+    this.carritoAbierto.set(false);
   }
 
 }
