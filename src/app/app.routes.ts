@@ -3,12 +3,19 @@ import { ProductosComponent } from './paginas/productos/productos.component';
 import { CrearPedidoComponent } from './paginas/crear-pedido/crear-pedido.component';
 import { HistorialPedidosComponent } from './paginas/historial-pedidos/historial-pedidos.component';
 import { DetallePedidoComponent } from './paginas/detalle-pedido/detalle-pedido.component';
+import { InicioComponent } from './paginas/inicio/inicio.component';
 
 export const routes: Routes = [
     {
         path:'',
-        redirectTo:'productos',
+        redirectTo:'inicio',
         pathMatch: 'full'
+    },
+
+    {
+        path: 'inicio',
+        component: InicioComponent,
+        title: 'INICIO'
     },
 
     {

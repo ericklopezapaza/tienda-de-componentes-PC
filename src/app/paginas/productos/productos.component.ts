@@ -22,7 +22,7 @@ export class ProductosComponent {
       precio: 1200,
       stock: 10,
       categoria: 'Procesadores',
-      imagen: '#'
+      imagen: 'https://m.media-amazon.com/images/W/BW_MEDIAX_AVIF_MEASUREMENT_1306696-T4/images/I/51So7GoGvxL._AC_SL1384_.jpg'
     },
 
     {
@@ -32,7 +32,7 @@ export class ProductosComponent {
       precio: 3200,
       stock: 5,
       categoria: 'Tarjetas gráficas',
-      imagen: '#'
+      imagen: 'https://m.media-amazon.com/images/W/BW_MEDIAX_AVIF_MEASUREMENT_1306696-T4/images/I/71t1ClD2EtL._AC_SL1500_.jpg'
     },
 
   ];

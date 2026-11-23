@@ -1,27 +1,72 @@
+<div class="min-vh-100 d-flex flex-column bg-light">
 
-<header>
-    <strong>Tienda PC</strong>
-</header>
+    <header class="bg-dark text-white shadow">
 
-<nav>
+        <nav class="navbar navbar-expand-lg navbar-dark container">
 
-    <a routerLink="/productos" routerLinkActive="activo">
-        Productos
-    </a>
+            <a class="navbar-brand fw-bold fs-4" routerLink="/productos">
+                <span class="text-primary">PC</span> GAMING STORE
+            </a>
 
-    <a routerLink="/pedidos/nuevo" routerLinkActive="activo">
-        Crear pedido
-    </a>
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#menuPrincipal"
+                aria-controls="menuPrincipal"
+                aria-expanded="false"
+                aria-label="Abrir menú">
 
-    <a routerLink="/pedidos" routerLinkActive="activo">
-        Historial
-    </a>
-</nav>
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-<main>
-    <router-outlet></router-outlet>
-</main>
+            <div class="collapse navbar-collapse" id="menuPrincipal">
+                <div class="navbar-nav ms-auto gap-lg-2">
 
-<footer>
-    Tienda de Computadoras - 2026
-</footer>
+                    <a
+                        class="nav-link"
+                        routerLink="/inicio"
+                        routerLinkActive="active">
+                        Inicio
+                    </a>
+
+                    <a
+                        class="nav-link"
+                        routerLink="/productos"
+                        routerLinkActive="active">
+                        Productos
+                    </a>
+
+                    <a
+                        class="nav-link"
+                        routerLink="/pedidos/nuevo"
+                        routerLinkActive="active">
+                        Crear pedido
+                    </a>
+
+                    <a
+                        class="nav-link"
+                        routerLink="/pedidos"
+                        routerLinkActive="active">
+                        Historial
+                    </a>
+
+                </div>
+            </div>
+
+        </nav>
+    </header>
+
+    <main class="container py-4 flex-grow-1">
+
+        <router-outlet></router-outlet>
+
+    </main>
+
+    <footer class="bg-dark text-white text-center py-3 mt-auto">
+        <p class="mb-0">
+            &copy; 2026 PC Gaming Store - Tienda de componentes para PC
+        </p>
+    </footer>
+
+</div>
