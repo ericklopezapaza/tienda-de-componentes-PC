@@ -64,7 +64,7 @@ export class ProductosComponent {
       precio: 1200,
       stock: 10,
       categoria: 'Procesadores',
-      imagen: 'images/Procesador AMD.jpg'
+      imagen: 'images/procesadores/Procesador AMD.jpg'
     },
 
     {
@@ -74,7 +74,7 @@ export class ProductosComponent {
       precio: 3200,
       stock: 5,
       categoria: 'Tarjetas gráficas',
-      imagen: 'images/tarjeta grafica.jpeg'
+      imagen: 'images/tarjetasgraficas/tarjeta grafica.jpeg'
     },
 
     {
@@ -94,7 +94,7 @@ export class ProductosComponent {
       precio: 8200,
       stock: 5,
       categoria: 'Tarjetas gráficas',
-      imagen: 'images/TG rtx 5070 Ti Edicion frieren.png'
+      imagen: 'images/tarjetasgraficas/TG rtx 5070 Ti Edicion frieren.png'
     },
 
     {
@@ -104,7 +104,7 @@ export class ProductosComponent {
       precio: 8200,
       stock: 5,
       categoria: 'Placas madre',
-      imagen: 'images/MotherB1.jpeg'
+      imagen: 'images/placasmadre/MotherB1.jpeg'
     },
 
     {
@@ -114,7 +114,7 @@ export class ProductosComponent {
       precio: 8200,
       stock: 5,
       categoria: 'Placas madre',
-      imagen: 'images/MotherB2.jpeg'
+      imagen: 'images/placasmadre/MotherB2.jpeg'
     },
 
     {
@@ -124,7 +124,7 @@ export class ProductosComponent {
       precio: 8200,
       stock: 5,
       categoria: 'Placas madre',
-      imagen: 'images/MotherB3.jpeg'
+      imagen: 'images/placasmadre/MotherB3.jpeg'
     },
 
     {
@@ -134,7 +134,7 @@ export class ProductosComponent {
       precio: 8200,
       stock: 5,
       categoria: 'Memorias RAM',
-      imagen: 'images/RAM.jpeg'
+      imagen: 'images/memoriasRAM/RAM.jpeg'
     },
 
     {
@@ -144,7 +144,7 @@ export class ProductosComponent {
       precio: 8200,
       stock: 5,
       categoria: 'Memorias RAM',
-      imagen: 'images/RAM2.jpeg'
+      imagen: 'images/memoriasRAM/RAM2.jpeg'
     },
 
     {
@@ -154,7 +154,7 @@ export class ProductosComponent {
       precio: 8200,
       stock: 5,
       categoria: 'Memorias RAM',
-      imagen: 'images/RAM3.jpeg'
+      imagen: 'images/memoriasRAM/RAM3.jpeg'
     },
 
     {
@@ -164,7 +164,7 @@ export class ProductosComponent {
       precio: 8200,
       stock: 5,
       categoria: 'Memorias RAM',
-      imagen: 'images/RAM4.jpeg'
+      imagen: 'images/memoriasRAM/RAM4.jpeg'
     },
 
     {
@@ -174,7 +174,7 @@ export class ProductosComponent {
       precio: 8200,
       stock: 5,
       categoria: 'Tarjetas gráficas',
-      imagen: 'images/TG rtx 5060.png'
+      imagen: 'images/tarjetasgraficas/TG rtx 5060.png'
     },
 
     {
@@ -184,7 +184,7 @@ export class ProductosComponent {
       precio: 1200,
       stock: 10,
       categoria: 'Procesadores',
-      imagen: 'images/procesor intel core i9-13900k.jpeg'
+      imagen: 'images/procesadores/procesor intel core i9-13900k.jpeg'
     },
 
   ];
