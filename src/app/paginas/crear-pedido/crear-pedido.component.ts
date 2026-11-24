@@ -27,8 +27,8 @@ export class CrearPedidoComponent {
   // Formulario con los datos necesarios del cliente
   formularioPedido = this.fb.group({
     nombreCliente: ['', [Validators.required, Validators.minLength(3)]],
-    ci: ['', [Validators.required, Validators.pattern(/^[0-9]+$/)]],
-    telefono: ['', [Validators.required, Validators.pattern(/^[0-9]{7,8}$/)]],
+    ci: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9-]+$/)]],
+    telefono: ['', [Validators.required, Validators.pattern(/^[0-9]{8}$/)]],
     direccion: ['', Validators.required]
   });
 
