@@ -1,386 +1,199 @@
 
 <section class="container py-5">
-
-  <!-- ENCABEZADO -->
-  <div class="position-relative text-center mb-5">
-
-    <span class="badge bg-primary mb-3 px-3 py-2">
-      TIENDA DE COMPONENTES PC
-    </span>
-
-    <h1 class="display-5 fw-bold">
-      Catálogo de productos
-    </h1>
-
-    <p class="text-secondary fs-5">
-      Encuentra los mejores componentes para tu computadora.
-    </p>
-
+  <div class="text-center mb-5">
+    <h1 class="display-5 fw-bold">Catálogo de productos</h1>
+    <p class="text-secondary fs-5">Encuentra los mejores componentes para tu computadora.</p>
   </div>
 
-
-  <!-- BUSCADOR -->
+  <!-- Buscador -->
   <div class="row justify-content-center mb-5">
-
     <div class="col-12 col-md-8 col-lg-6">
-
       <div class="input-group input-group-lg shadow-sm">
-
         <span class="input-group-text bg-white">
           <i class="bi bi-search"></i>
         </span>
-
         <input
           type="text"
           class="form-control"
           placeholder="Buscar productos o categorías..."
           (input)="buscarProducto($event)"
         >
-
       </div>
-
     </div>
-
   </div>
 
-
-  <!-- CATÁLOGO POR CATEGORÍAS -->
+  <!-- Catálogo agrupado por categorías -->
   @for (grupo of categoriasProductos(); track grupo.nombre) {
-
     <div class="mb-5">
-
-      <!-- TÍTULO DE CATEGORÍA -->
       <div class="categoria-titulo mb-4">
-
-        <h2 class="fw-bold mb-0">
-          {{ grupo.nombre }}
-        </h2>
-
-        <span class="badge bg-primary rounded-pill">
-          {{ grupo.productos.length }} productos
-        </span>
-
+        <h2 class="fw-bold mb-0">{{ grupo.nombre }}</h2>
+        <span class="badge bg-primary rounded-pill">{{ grupo.productos.length }} productos</span>
       </div>
 
-
-      <!-- CARRUSEL -->
       <div class="carrusel-productos">
-
-        <!-- FLECHA IZQUIERDA -->
         <button
           type="button"
           class="flecha-carrusel izquierda"
           (click)="moverCarrusel(grupo.nombre, 'izquierda')"
-          [disabled]="posiciones()[grupo.nombre] === 0">
-
+          [disabled]="posiciones()[grupo.nombre] === 0"
+        >
           <i class="bi bi-chevron-left"></i>
-
         </button>
 
-
-        <!-- CONTENEDOR DE PRODUCTOS -->
-        <div
-          class="contenedor-productos"
-          [id]="'carrusel-' + grupo.nombre">
-
+        <div class="contenedor-productos" [id]="'carrusel-' + grupo.nombre">
           @for (producto of grupo.productos; track producto.codigo) {
-
             <div class="elemento-carrusel">
-
               <app-tarjeta-producto
                 [producto]="producto"
-                (agregar)="agregarCompra($event)">
-              </app-tarjeta-producto>
-
+                (agregar)="agregarCompra($event)"
+              ></app-tarjeta-producto>
             </div>
-
           }
-
         </div>
 
-
-        <!-- FLECHA DERECHA -->
         <button
           type="button"
           class="flecha-carrusel derecha"
-          (click)="moverCarrusel(grupo.nombre, 'derecha')">
-
+          (click)="moverCarrusel(grupo.nombre, 'derecha')"
+        >
           <i class="bi bi-chevron-right"></i>
-
         </button>
-
       </div>
-
     </div>
-
   } @empty {
-
-    <!-- SIN RESULTADOS -->
     <div class="text-center py-5">
-
       <i class="bi bi-search display-3 text-secondary"></i>
-
-      <h3 class="fw-bold mt-3">
-        No encontramos productos
-      </h3>
-
-      <p class="text-secondary">
-        Intenta buscar con otro nombre o categoría.
-      </p>
-
+      <h3 class="fw-bold mt-3">No encontramos productos</h3>
+      <p class="text-secondary">Intenta buscar con otro nombre o categoría.</p>
     </div>
-
   }
-
 </section>
 
-
-<!-- BURBUJA FLOTANTE DEL CARRITO -->
-
+<!-- Botón flotante del carrito -->
 <button
   type="button"
   class="burbuja-carrito"
   (click)="abrirCarrito()"
-  aria-label="Abrir carrito de compras">
-
+  aria-label="Abrir carrito de compras"
+>
   <i class="bi bi-cart3"></i>
-
   @if (cantidadCarrito() > 0) {
-
-    <span class="contador-carrito">
-      {{ cantidadCarrito() }}
-    </span>
-
+    <span class="contador-carrito">{{ cantidadCarrito() }}</span>
   }
-
 </button>
 
-
-<!-- SIDEBAR DEL CARRITO -->
-
+<!-- Panel lateral del carrito -->
 @if (carritoAbierto()) {
+  <div class="carrito-overlay" (click)="cerrarCarrito()"></div>
 
-  <!-- FONDO OSCURO -->
-  <div
-    class="carrito-overlay"
-    (click)="cerrarCarrito()">
-  </div>
-
-
-  <!-- PANEL LATERAL -->
-  <aside
-    class="carrito-sidebar"
-    (click)="$event.stopPropagation()">
-
-
-    <!-- ENCABEZADO DEL CARRITO -->
+  <aside class="carrito-sidebar" (click)="$event.stopPropagation()">
     <div class="carrito-header">
-
       <div>
-
         <h3 class="fw-bold mb-1">
-
-          <i class="bi bi-cart3 me-2"></i>
-          Mi carrito
-
+          <i class="bi bi-cart3 me-2"></i>Mi carrito
         </h3>
-
-        <small class="text-secondary">
-
-          {{ cantidadCarrito() }}
-          unidades seleccionadas
-
-        </small>
-
+        <small class="text-secondary">{{ cantidadCarrito() }} unidades seleccionadas</small>
       </div>
 
-
-      <!-- BOTÓN CERRAR -->
       <button
         type="button"
         class="btn btn-light btn-cerrar"
         (click)="cerrarCarrito()"
-        aria-label="Cerrar carrito">
-
+        aria-label="Cerrar carrito"
+      >
         <i class="bi bi-x-lg"></i>
-
       </button>
-
     </div>
 
-
-    <!-- CONTENIDO DEL CARRITO -->
     <div class="carrito-contenido">
-
       @if (carrito().length > 0) {
-
         @for (item of carrito(); track item.producto.codigo) {
-
           <div class="carrito-item">
-
-            <!-- IMAGEN -->
             <img
               [src]="item.producto.imagen"
               [alt]="item.producto.nombre"
               class="carrito-imagen"
             >
 
-
-            <!-- INFORMACIÓN -->
             <div class="carrito-info">
+              <h6 class="fw-bold">{{ item.producto.nombre }}</h6>
+              <p class="text-secondary small mb-1">Precio unitario: Bs. {{ item.producto.precio }}</p>
 
-              <h6 class="fw-bold">
-                {{ item.producto.nombre }}
-              </h6>
-
-              <p class="text-secondary small mb-1">
-                Precio unitario: Bs. {{ item.producto.precio }}
-              </p>
-
-
-              <!-- CONTROLES DE CANTIDAD -->
               <div class="controles-cantidad">
-
-                <!-- DISMINUIR -->
                 <button
                   type="button"
                   class="btn-cantidad"
                   (click)="reducirCantidad(item.producto.codigo)"
-                  aria-label="Reducir cantidad">
-
+                  aria-label="Reducir cantidad"
+                >
                   <i class="bi bi-dash-lg"></i>
-
                 </button>
 
+                <span class="cantidad-producto">{{ item.cantidad }}</span>
 
-                <!-- CANTIDAD -->
-                <span class="cantidad-producto">
-                  {{ item.cantidad }}
-                </span>
-
-
-                <!-- AUMENTAR -->
                 <button
                   type="button"
                   class="btn-cantidad"
                   (click)="aumentarCantidad(item.producto.codigo)"
                   [disabled]="item.producto.stock <= 0"
-                  aria-label="Aumentar cantidad">
-
+                  aria-label="Aumentar cantidad"
+                >
                   <i class="bi bi-plus-lg"></i>
-
                 </button>
-
               </div>
 
-
-              <!-- SUBTOTAL DEL PRODUCTO -->
               <p class="text-success fw-bold mb-0">
-
-                Subtotal: Bs.
-                {{ item.producto.precio * item.cantidad }}
-
+                Subtotal: Bs. {{ item.producto.precio * item.cantidad }}
               </p>
-
-              <small class="text-secondary">
-                Stock disponible: {{ item.producto.stock }}
-              </small>
-
+              <small class="text-secondary">Stock disponible: {{ item.producto.stock }}</small>
             </div>
 
-
-            <!-- ELIMINAR PRODUCTO -->
             <button
               type="button"
               class="btn btn-outline-danger btn-sm btn-eliminar"
               title="Eliminar producto"
               aria-label="Eliminar producto"
-              (click)="quitarProducto(item.producto.codigo)">
-
+              (click)="quitarProducto(item.producto.codigo)"
+            >
               <i class="bi bi-trash"></i>
-
             </button>
-
           </div>
-
         }
-
       } @else {
-
-        <!-- CARRITO VACÍO -->
         <div class="carrito-vacio">
-
           <i class="bi bi-cart-x display-1 text-secondary"></i>
-
-          <h5 class="fw-bold mt-3">
-            Tu carrito está vacío
-          </h5>
-
-          <p class="text-secondary">
-            Agrega algunos componentes para comenzar tu compra.
-          </p>
-
-          <button
-            type="button"
-            class="btn btn-primary"
-            (click)="cerrarCarrito()">
-
+          <h5 class="fw-bold mt-3">Tu carrito está vacío</h5>
+          <p class="text-secondary">Agrega algunos componentes para comenzar tu compra.</p>
+          <button type="button" class="btn btn-primary" (click)="cerrarCarrito()">
             Explorar productos
-
           </button>
-
         </div>
-
       }
-
     </div>
 
-
-    <!-- PIE DEL CARRITO -->
     @if (carrito().length > 0) {
-
       <div class="carrito-footer">
-
-        <!-- TOTAL -->
         <div class="d-flex justify-content-between mb-3">
-
-          <span class="fw-bold fs-5">
-            Total:
-          </span>
-
-          <span class="fw-bold fs-5 text-success">
-            Bs. {{ totalCarrito() }}
-          </span>
-
+          <span class="fw-bold fs-5">Total:</span>
+          <span class="fw-bold fs-5 text-success">Bs. {{ totalCarrito() }}</span>
         </div>
 
-
-        <!-- VACÍAR CARRITO -->
         <button
           type="button"
           class="btn btn-outline-danger w-100 mb-2"
-          (click)="vaciarCarrito()">
-
-          <i class="bi bi-trash me-2"></i>
-          Vaciar carrito
-
+          (click)="vaciarCarrito()"
+        >
+          <i class="bi bi-trash me-2"></i>Vaciar carrito
         </button>
 
-
-        <!-- CONTINUAR COMPRA -->
-        <button
-          type="button"
+        <a
           class="btn btn-primary w-100"
-          disabled>
-
-          Continuar compra
-
-        </button>
-
+          routerLink="/pedidos/nuevo"
+          (click)="cerrarCarrito()"
+        >
+          <i class="bi bi-arrow-right-circle me-2"></i>Continuar compra
+        </a>
       </div>
-
     }
-
   </aside>
-
 }

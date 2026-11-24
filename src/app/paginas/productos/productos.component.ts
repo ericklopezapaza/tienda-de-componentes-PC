@@ -3,9 +3,10 @@ import { Component, signal, computed, inject } from '@angular/core';
 import { Producto } from '../../modelos/producto';
 import { TarjetaProducto } from '../../components/tarjeta-producto/tarjeta-producto';
 import { TiendaService } from '../../servicios/tienda';
+import { RouteConfigLoadEnd, RouterLink } from '@angular/router';
 
 @Component({
-  imports: [TarjetaProducto],
+  imports: [TarjetaProducto, RouterLink],
   selector: 'app-productos',
   styleUrl: './productos.component.css',
   templateUrl: './productos.component.html',
@@ -14,28 +15,16 @@ export class ProductosComponent {
 
   // Acceder al servicio compartido de la tienda
   private tienda = inject(TiendaService);
-
-  // Consultar el catálogo que administra el servicio
   get productos(): Producto[] {
     return this.tienda.productos;
   }
 
-  // CARRITO DE COMPRAS
-
-  // Utilizar el carrito compartido del servicio
   carrito = this.tienda.carrito;
-
-  // Obtener la cantidad total de productos
   cantidadCarrito = this.tienda.cantidadCarrito;
-
-  // Obtener el importe total de la compra
   totalCarrito = this.tienda.totalCarrito;
-
-  // Mostrar u ocultar el carrito lateral
   carritoAbierto = signal(false);
 
   // CARRUSEL DE PRODUCTOS
-
   posiciones = signal<Record<string, number>>({});
 
   moverCarrusel(
@@ -70,13 +59,8 @@ export class ProductosComponent {
   }
 
   // BUSCADOR
-
   busqueda = signal('');
-
-  // FILTRAR Y AGRUPAR POR CATEGORÍAS
-
   categoriasProductos = computed(() => {
-
     // Detectar modificaciones en el stock desde el servicio
     this.tienda.actualizacionCatalogo();
 
@@ -105,16 +89,12 @@ export class ProductosComponent {
   });
 
   // ACTUALIZAR BUSCADOR
-
   buscarProducto(event: Event): void {
-
     const valor = (event.target as HTMLInputElement).value;
-
     this.busqueda.set(valor);
   }
 
   // AGREGAR PRODUCTOS AL CARRITO
-
   agregarCompra(producto: Producto): void {
     this.tienda.agregarCompra(producto);
   }
