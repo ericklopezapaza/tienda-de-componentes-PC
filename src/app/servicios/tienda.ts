@@ -3,7 +3,7 @@ import { Injectable, signal, computed } from '@angular/core';
 
 import { Producto } from '../modelos/producto';
 import { pedidos as Pedido } from '../modelos/pedidos';
-import { PRODUCTOS } from '../datos/productos';
+import { PRODUCTOS } from './datos/productos';
 
 // Elementos que forman parte del carrito
 export interface ItemCarrito {
