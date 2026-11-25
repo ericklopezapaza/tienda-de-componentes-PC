@@ -26,20 +26,15 @@ export class ProductosComponent {
 
   // CARRUSEL DE PRODUCTOS
   posiciones = signal<Record<string, number>>({});
-
   moverCarrusel(
     categoria: string,
     direccion: 'izquierda' | 'derecha'
   ): void {
-
     const contenedor = document.getElementById(
       'carrusel-' + categoria
     );
-
     if (!contenedor) return;
-
     const desplazamiento = contenedor.clientWidth * 0.8;
-
     contenedor.scrollBy({
       left: direccion === 'derecha'
         ? desplazamiento
@@ -48,7 +43,6 @@ export class ProductosComponent {
     });
 
     const actual = this.posiciones()[categoria] || 0;
-
     this.posiciones.update(posiciones => ({
       ...posiciones,
       [categoria]: Math.max(
@@ -77,7 +71,6 @@ export class ProductosComponent {
     const categorias = [...new Set(
       filtrados.map(producto => producto.categoria)
     )];
-
     return categorias.map(categoria => ({
       nombre: categoria,
       productos: filtrados.filter(
@@ -87,47 +80,34 @@ export class ProductosComponent {
 
   });
 
-  // ACTUALIZAR BUSCADOR
   buscarProducto(event: Event): void {
     const valor = (event.target as HTMLInputElement).value;
     this.busqueda.set(valor);
   }
 
-  // AGREGAR PRODUCTOS AL CARRITO
   agregarCompra(producto: Producto): void {
     this.tienda.agregarCompra(producto);
   }
-
-  // AUMENTAR CANTIDAD
 
   aumentarCantidad(codigo: number): void {
     this.tienda.aumentarCantidad(codigo);
   }
 
-  // REDUCIR CANTIDAD
-
   reducirCantidad(codigo: number): void {
     this.tienda.reducirCantidad(codigo);
   }
-
-  // ELIMINAR PRODUCTO COMPLETO
 
   quitarProducto(codigo: number): void {
     this.tienda.quitarProducto(codigo);
   }
 
-  // VACIAR CARRITO
-
   vaciarCarrito(): void {
     this.tienda.vaciarCarrito();
   }
 
-  // ABRIR Y CERRAR CARRITO
-
   abrirCarrito(): void {
     this.carritoAbierto.set(true);
   }
-
   cerrarCarrito(): void {
     this.carritoAbierto.set(false);
   }

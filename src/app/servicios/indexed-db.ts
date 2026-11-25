@@ -1,4 +1,3 @@
-
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -59,7 +58,6 @@ export class IndexedDb {
         // Accede al almacén de pedidos
         const almacen = transaccion.objectStore('pedidos');
         const solicitud = almacen.getAll();
-
         // Devolver los pedidos recuperados
         solicitud.onsuccess = () => {
             resolve(solicitud.result);
