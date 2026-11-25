@@ -82,14 +82,18 @@ export class CrearPedidoComponent {
       detalles: this.obtenerDetalles()
     };
 
-    try {
-      // Guardar el pedido en IndexedDB mediante el servicio
-      await this.pedidosService.registrarPedido(nuevoPedido);
-      this.mensajeExito.set('El pedido se registró correctamente.');
-    } catch (error) {
-      console.error('Error al registrar el pedido:', error);
-      this.mensajeError.set('No se pudo registrar el pedido. Inténtalo nuevamente.');
-    }
+   try {
+    // Guardar el pedido en IndexedDB mediante el servicio.
+    await this.pedidosService.registrarPedido(nuevoPedido);
+    this.formularioPedido.reset();
+    this.tienda.vaciarCarrito();
+    this.mensajeExito.set(
+      'El pedido se registró correctamente. Revisa tus pedidos en la sección Mis pedidos.'
+    );
+  } catch (error) {
+    console.error('Error al registrar el pedido:', error);
+    this.mensajeError.set('No se pudo registrar el pedido. Inténtalo nuevamente.');
+  }
   }
 
 }

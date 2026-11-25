@@ -1,17 +1,17 @@
-
 <div class="container py-4">
   <div class="mb-4">
     <h2 class="fw-bold mb-1">Registrar pedido</h2>
-    <p class="text-secondary mb-0">Completa tus datos y revisa los productos de tu compra.</p>
+    <p class="text-secondary mb-0">
+      Completa tus datos y revisa los productos de tu compra.
+    </p>
   </div>
 
   <form [formGroup]="formularioPedido" (ngSubmit)="registrarPedido()">
     <div class="row g-4">
-      <!-- Datos del cliente -->
       <div class="col-12 col-lg-6">
         <div class="card border-0 shadow-sm h-100">
           <div class="card-header bg-white py-3">
-            <h5 class="fw-bold mb-0">
+            <h5 class="fw-bold mb-1">
               <i class="bi bi-person-lines-fill me-2 text-primary"></i>
               Datos del cliente
             </h5>
@@ -23,10 +23,10 @@
               <label class="form-label fw-semibold">Nombre completo</label>
               <input
                 type="text"
-                class="form-control form-control-lg"
-                [class.is-invalid]="formularioPedido.controls.nombreCliente.invalid && formularioPedido.controls.nombreCliente.touched"
+                class="form-control"
                 formControlName="nombreCliente"
                 placeholder="Ingrese su nombre completo"
+                [class.is-invalid]="formularioPedido.controls.nombreCliente.invalid && formularioPedido.controls.nombreCliente.touched"
               >
               @if (formularioPedido.controls.nombreCliente.touched) {
                 @if (formularioPedido.controls.nombreCliente.hasError('required')) {
@@ -37,14 +37,15 @@
               }
             </div>
 
+            <!-- CI -->
             <div class="mb-3">
               <label class="form-label fw-semibold">Carnet de identidad</label>
               <input
                 type="text"
-                class="form-control form-control-lg"
-                [class.is-invalid]="formularioPedido.controls.ci.invalid && formularioPedido.controls.ci.touched"
+                class="form-control"
                 formControlName="ci"
-                placeholder="Número de CI"
+                placeholder="Ingrese su numero de carnet de identidad"
+                [class.is-invalid]="formularioPedido.controls.ci.invalid && formularioPedido.controls.ci.touched"
               >
               @if (formularioPedido.controls.ci.touched) {
                 @if (formularioPedido.controls.ci.hasError('required')) {
@@ -55,37 +56,40 @@
               }
             </div>
 
+            <!-- Teléfono -->
             <div class="mb-3">
               <label class="form-label fw-semibold">Teléfono</label>
               <input
                 type="tel"
-                class="form-control form-control-lg"
-                [class.is-invalid]="formularioPedido.controls.telefono.invalid && formularioPedido.controls.telefono.touched"
+                class="form-control"
                 formControlName="telefono"
-                placeholder="Número de contacto"
+                placeholder="Ingrese su numero de telefono"
+                [class.is-invalid]="formularioPedido.controls.telefono.invalid && formularioPedido.controls.telefono.touched"
               >
               @if (formularioPedido.controls.telefono.touched) {
                 @if (formularioPedido.controls.telefono.hasError('required')) {
                   <div class="invalid-feedback d-block">El teléfono es obligatorio.</div>
                 } @else if (formularioPedido.controls.telefono.hasError('pattern')) {
-                  <div class="invalid-feedback d-block">El teléfono debe contener entre 7 y 8 dígitos numéricos.</div>
+                  <div class="invalid-feedback d-block">El teléfono debe contener 8 dígitos numéricos.</div>
                 }
               }
             </div>
 
+            <!-- Dirección -->
             <div class="mb-3">
               <label class="form-label fw-semibold">Dirección de entrega</label>
               <textarea
                 class="form-control"
-                [class.is-invalid]="formularioPedido.controls.direccion.invalid && formularioPedido.controls.direccion.touched"
                 formControlName="direccion"
                 rows="3"
-                placeholder="Ingrese su dirección"
+                placeholder="Ingrese su dirección de domicilio"
+                [class.is-invalid]="formularioPedido.controls.direccion.invalid && formularioPedido.controls.direccion.touched"
               ></textarea>
               @if (formularioPedido.controls.direccion.touched && formularioPedido.controls.direccion.hasError('required')) {
                 <div class="invalid-feedback d-block">La dirección de entrega es obligatoria.</div>
               }
             </div>
+
           </div>
         </div>
       </div>
@@ -94,7 +98,7 @@
       <div class="col-12 col-lg-6">
         <div class="card border-0 shadow-sm h-100">
           <div class="card-header bg-white py-3">
-            <h5 class="fw-bold mb-0">
+            <h5 class="fw-bold mb-1">
               <i class="bi bi-cart3 me-2 text-primary"></i>
               Resumen del pedido
             </h5>
@@ -153,16 +157,17 @@
           </div>
         </div>
       </div>
+
     </div>
 
-    <!-- Resultado del registro -->
+    <!-- Mensajes del registro -->
     @if (mensajeExito()) {
       <div class="alert alert-success mt-4">{{ mensajeExito() }}</div>
     }
     @if (mensajeError()) {
       <div class="alert alert-danger mt-4">{{ mensajeError() }}</div>
     }
-
+    <!-- Botón de registro -->
     <div class="d-flex justify-content-end mt-4">
       <button
         type="submit"
@@ -173,5 +178,7 @@
         Registrar pedido
       </button>
     </div>
+
   </form>
 </div>
+```
