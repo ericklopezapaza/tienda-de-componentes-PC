@@ -525,7 +525,7 @@ export class TiendaService {
   ];
 
 
-  // metodo para modificar el catalogo
+  // metodo para modificar el stock del catalogo
   private modificarStock(codigo: number, cambio: number): void {
 
     this.productos = this.productos.map(producto =>
@@ -550,7 +550,22 @@ export class TiendaService {
     this.actualizacionCatalogo.update(valor => valor + 1);
   }
 
-  // AGREGAR PRODUCTOS AL CARRITO
+  // devolver existencias de un pedido
+  devolverExistencias(
+    detalles: { codigodetalle: number; nombreProducto: string; precioUnitario: number; cantidad: number; subtotal: number }[]
+  ): void {
+
+    detalles.forEach(detalle => {
+      const producto = this.productos.find(
+        p => p.nombre === detalle.nombreProducto
+      );
+      if (producto) {
+        this.modificarStock(producto.codigo, detalle.cantidad);
+      }
+    });
+  }
+
+  // agregar producto al carrito
   agregarCompra(producto: Producto): void {
     const productoCatalogo = this.productos.find(
       p => p.codigo === producto.codigo
