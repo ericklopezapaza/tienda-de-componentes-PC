@@ -61,7 +61,6 @@ export class ProductosComponent {
   // BUSCADOR
   busqueda = signal('');
   categoriasProductos = computed(() => {
-    // Detectar modificaciones en el stock desde el servicio
     this.tienda.actualizacionCatalogo();
 
     const termino = this.busqueda().trim().toLowerCase();

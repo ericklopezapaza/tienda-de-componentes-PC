@@ -1,11 +1,10 @@
 
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable, inject, signal, computed } from '@angular/core';
 
 import { Producto } from '../modelos/producto';
 import { pedidos as Pedido } from '../modelos/pedidos';
 import { PRODUCTOS } from './datos/productos';
 
-// Elementos que forman parte del carrito
 export interface ItemCarrito {
   producto: Producto;
   cantidad: number;
@@ -16,27 +15,17 @@ export interface ItemCarrito {
 })
 export class TiendaService {
 
-  // Pedidos registrados
+  // Datos
   pedidosRegistrados = signal<Pedido[]>([]);
-
-  // Catálogo de productos
   productos: Producto[] = [...PRODUCTOS];
-
-  // Carrito de compras
   carrito = signal<ItemCarrito[]>([]);
-
-  // Notifica cambios en el catálogo
   actualizacionCatalogo = signal(0);
 
-  // Cantidad total de unidades en el carrito
+  // Totales del carrito
   cantidadCarrito = computed(() =>
-    this.carrito().reduce(
-      (total, item) => total + item.cantidad,
-      0
-    )
+    this.carrito().reduce((total, item) => total + item.cantidad, 0)
   );
 
-  // Importe total del carrito
   totalCarrito = computed(() =>
     this.carrito().reduce(
       (total, item) => total + item.producto.precio * item.cantidad,
@@ -44,7 +33,7 @@ export class TiendaService {
     )
   );
 
-  // Modificar el stock del catálogo
+  // Actualizar el stock de un producto
   private modificarStock(codigo: number, cambio: number): void {
 
     this.productos = this.productos.map(producto =>
@@ -59,7 +48,6 @@ export class TiendaService {
 
     if (!productoActualizado) return;
 
-    // Actualizar la referencia del producto dentro del carrito
     this.carrito.update(items =>
       items.map(item =>
         item.producto.codigo === codigo
@@ -68,20 +56,17 @@ export class TiendaService {
       )
     );
 
-    // Notificar actualización del catálogo
     this.actualizacionCatalogo.update(valor => valor + 1);
   }
 
-  // Devolver existencias de un pedido cancelado
-  devolverExistencias(
-    detalles: {
-      codigodetalle: number;
-      nombreProducto: string;
-      precioUnitario: number;
-      cantidad: number;
-      subtotal: number;
-    }[]
-  ): void {
+  // Devolver el stock de un pedido cancelado
+  devolverExistencias(detalles: {
+    codigodetalle: number;
+    nombreProducto: string;
+    precioUnitario: number;
+    cantidad: number;
+    subtotal: number;
+  }[]): void {
 
     detalles.forEach(detalle => {
       const producto = this.productos.find(
@@ -101,10 +86,8 @@ export class TiendaService {
       item => item.codigo === producto.codigo
     );
 
-    // Verificar disponibilidad
     if (!productoCatalogo || productoCatalogo.stock <= 0) return;
 
-    // Descontar una unidad del inventario
     this.modificarStock(producto.codigo, -1);
 
     const productoActualizado = this.productos.find(
@@ -113,14 +96,11 @@ export class TiendaService {
 
     if (!productoActualizado) return;
 
-    // Comprobar si el producto ya existe en el carrito
     const existente = this.carrito().find(
       item => item.producto.codigo === producto.codigo
     );
 
     if (existente) {
-
-      // Aumentar la cantidad del producto existente
       this.carrito.update(items =>
         items.map(item =>
           item.producto.codigo === producto.codigo
@@ -128,16 +108,10 @@ export class TiendaService {
             : item
         )
       );
-
     } else {
-
-      // Agregar un nuevo producto al carrito
       this.carrito.update(items => [
         ...items,
-        {
-          producto: productoActualizado,
-          cantidad: 1
-        }
+        { producto: productoActualizado, cantidad: 1 }
       ]);
     }
   }
@@ -149,13 +123,10 @@ export class TiendaService {
       item => item.codigo === codigo
     );
 
-    // Verificar que exista stock disponible
     if (!producto || producto.stock <= 0) return;
 
-    // Descontar una unidad del inventario
     this.modificarStock(codigo, -1);
 
-    // Aumentar la cantidad en el carrito
     this.carrito.update(items =>
       items.map(item =>
         item.producto.codigo === codigo
@@ -174,10 +145,8 @@ export class TiendaService {
 
     if (!item) return;
 
-    // Devolver una unidad al inventario
     this.modificarStock(codigo, 1);
 
-    // Reducir la cantidad o eliminar el producto si llega a cero
     this.carrito.update(items =>
       items
         .map(producto =>
@@ -189,7 +158,7 @@ export class TiendaService {
     );
   }
 
-  // Eliminar un producto completamente del carrito
+  // Quitar un producto del carrito
   quitarProducto(codigo: number): void {
 
     const item = this.carrito().find(
@@ -198,25 +167,22 @@ export class TiendaService {
 
     if (!item) return;
 
-    // Devolver todas las unidades al inventario
     this.modificarStock(codigo, item.cantidad);
 
-    // Eliminar el producto del carrito
     this.carrito.update(items =>
       items.filter(item => item.producto.codigo !== codigo)
     );
   }
 
-  // Vaciar completamente el carrito
+  // Vaciar el carrito y devolver las existencias
   vaciarCarrito(): void {
-
-    // Devolver las existencias de todos los productos
     this.carrito().forEach(item => {
       this.modificarStock(item.producto.codigo, item.cantidad);
     });
 
-    // Limpiar el carrito
     this.carrito.set([]);
   }
-
+  limpiarCarrito(): void {
+    this.carrito.set([]);
+  }
 }

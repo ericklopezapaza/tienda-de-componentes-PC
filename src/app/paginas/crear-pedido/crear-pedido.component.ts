@@ -7,16 +7,14 @@ import { PedidosService } from '../../servicios/pedidos';
 import { DetallePedido } from '../../modelos/DetallePedido';
 import { pedidos as Pedido } from '../../modelos/pedidos';
 
-
 @Component({
-  imports: [ReactiveFormsModule, CurrencyPipe],
   selector: 'app-crear-pedido',
-  styleUrl: './crear-pedido.component.css',
+  imports: [ReactiveFormsModule, CurrencyPipe],
   templateUrl: './crear-pedido.component.html',
+  styleUrl: './crear-pedido.component.css'
 })
 export class CrearPedidoComponent {
 
-  // Herramienta de Angular para construir formularios reactivos
   private fb = inject(FormBuilder);
   private tienda = inject(TiendaService);
   private pedidosService = inject(PedidosService);
@@ -24,7 +22,7 @@ export class CrearPedidoComponent {
   mensajeExito = signal('');
   mensajeError = signal('');
 
-  // Formulario con los datos necesarios del cliente
+  // Formulario del cliente
   formularioPedido = this.fb.group({
     nombreCliente: ['', [Validators.required, Validators.minLength(3)]],
     ci: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9-]+$/)]],
@@ -32,20 +30,16 @@ export class CrearPedidoComponent {
     direccion: ['', Validators.required]
   });
 
-  // Obtener los productos que el cliente agregó al carrito
+  // Datos del carrito
   carrito = this.tienda.carrito;
 
-  // Calcular el total de unidades del pedido
   cantidadTotal = computed(() =>
-    this.carrito().reduce(
-      (total, item) => total + item.cantidad,
-      0
-    )
+    this.carrito().reduce((total, item) => total + item.cantidad, 0)
   );
 
-
   totalPedido = this.tienda.totalCarrito;
-  // Convertir los productos del carrito al formato del detalle del pedido
+
+  // Obtener los detalles del pedido
   obtenerDetalles(): DetallePedido[] {
     return this.carrito().map(item => ({
       codigodetalle: item.producto.codigo,
@@ -56,7 +50,7 @@ export class CrearPedidoComponent {
     }));
   }
 
-  //registro del pedido
+  // Registrar un pedido
   async registrarPedido(): Promise<void> {
     this.mensajeExito.set('');
     this.mensajeError.set('');
@@ -65,6 +59,7 @@ export class CrearPedidoComponent {
       this.formularioPedido.markAllAsTouched();
       return;
     }
+
     if (this.carrito().length === 0) {
       this.mensajeError.set('Debes agregar productos antes de registrar el pedido.');
       return;
@@ -82,18 +77,19 @@ export class CrearPedidoComponent {
       detalles: this.obtenerDetalles()
     };
 
-   try {
-    // Guardar el pedido en IndexedDB mediante el servicio.
-    await this.pedidosService.registrarPedido(nuevoPedido);
-    this.formularioPedido.reset();
-    this.tienda.vaciarCarrito();
-    this.mensajeExito.set(
-      'El pedido se registró correctamente. Revisa tus pedidos en la sección Mis pedidos.'
-    );
-  } catch (error) {
-    console.error('Error al registrar el pedido:', error);
-    this.mensajeError.set('No se pudo registrar el pedido. Inténtalo nuevamente.');
-  }
-  }
+    try {
+      await this.pedidosService.registrarPedido(nuevoPedido);
 
+      this.formularioPedido.reset();
+      this.tienda.limpiarCarrito();
+
+      this.mensajeExito.set(
+        'El pedido se registró correctamente. Revisa tus pedidos en la sección Mis pedidos.'
+      );
+
+    } catch (error) {
+      console.error('Error al registrar el pedido:', error);
+      this.mensajeError.set('No se pudo registrar el pedido. Inténtalo nuevamente.');
+    }
+  }
 }

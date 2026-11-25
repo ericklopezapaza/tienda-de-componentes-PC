@@ -5,10 +5,10 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class IndexedDb {
-  // Abrir o crear la base de datos de la tienda
+  // Abrir la base de datos de la tienda
   abrirBaseDatos(): Promise<IDBDatabase> {
     return new Promise((resolve, reject) => {
-      const solicitud = indexedDB.open('TiendaPC', 1);
+      const solicitud = indexedDB.open('TiendaPC');
       // Creacion de la base de datos y del object store
       solicitud.onupgradeneeded = () => {
         const db = solicitud.result;
