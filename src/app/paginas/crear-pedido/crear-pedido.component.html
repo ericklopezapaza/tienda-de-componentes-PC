@@ -51,7 +51,7 @@
                 @if (formularioPedido.controls.ci.hasError('required')) {
                   <div class="invalid-feedback d-block">El carnet de identidad es obligatorio.</div>
                 } @else if (formularioPedido.controls.ci.hasError('pattern')) {
-                  <div class="invalid-feedback d-block">El CI debe contener únicamente números.</div>
+                  <div class="invalid-feedback d-block">El CI puede contener numeros y letras.</div>
                 }
               }
             </div>

@@ -1,4 +1,3 @@
-
 Descripcion del proyecto
 
 El presente proyecto muestra la funcionalidad de una tienda de productos de computadora siendo tanto los materiales o partes de la misma
@@ -10,3 +9,4 @@ integrantes :
 
 Configuracion adicional
   se recomienda descargar el bootstrap icons
+  una vez descargado hacer npm install
