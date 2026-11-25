@@ -1,13 +1,11 @@
-
 <section class="container py-5">
   <div class="text-center mb-5">
     <h1 class="display-5 fw-bold">Catálogo de productos</h1>
     <p class="text-secondary fs-5">Encuentra los mejores componentes para tu computadora.</p>
   </div>
-
-  <!-- Buscador -->
+  <!-- Buscador con filtro por categorías -->
   <div class="row justify-content-center mb-5">
-    <div class="col-12 col-md-8 col-lg-6">
+    <div class="col-12 col-md-10 col-lg-8">
       <div class="input-group input-group-lg shadow-sm">
         <span class="input-group-text bg-white">
           <i class="bi bi-search"></i>
@@ -16,12 +14,34 @@
           type="text"
           class="form-control"
           placeholder="Buscar productos o categorías..."
+          [value]="busqueda()"
           (input)="buscarProducto($event)"
         >
+        <select
+          class="form-select bg-light"
+          style="max-width: 220px;"
+          aria-label="Filtrar por categoría"
+          [value]="categoriaSeleccionada()"
+          (change)="filtrarPorCategoria($event)"
+        >
+          <option value="">Categorias</option>
+          @for (cat of todasCategorias(); track cat) {
+            <option [value]="cat">{{ cat }}</option>
+          }
+        </select>
+        @if (busqueda() || categoriaSeleccionada()) {
+          <button
+            type="button"
+            class="btn btn-outline-secondary"
+            title="Limpiar filtro"
+            (click)="limpiarBusqueda()"
+          >
+            <i class="bi bi-x-lg"></i>
+          </button>
+        }
       </div>
     </div>
   </div>
-
   <!-- Catálogo agrupado por categorías -->
   @for (grupo of categoriasProductos(); track grupo.nombre) {
     <div class="mb-5">
@@ -29,17 +49,15 @@
         <h2 class="fw-bold mb-0">{{ grupo.nombre }}</h2>
         <span class="badge bg-primary rounded-pill">{{ grupo.productos.length }} productos</span>
       </div>
-
       <div class="carrusel-productos">
         <button
           type="button"
           class="flecha-carrusel izquierda"
           (click)="moverCarrusel(grupo.nombre, 'izquierda')"
-          [disabled]="posiciones()[grupo.nombre] === 0"
+          [disabled]="posiciones()[grupo.nombre] === 0">
+          <i class="bi bi-chevron-left"></i
         >
-          <i class="bi bi-chevron-left"></i>
         </button>
-
         <div class="contenedor-productos" [id]="'carrusel-' + grupo.nombre">
           @for (producto of grupo.productos; track producto.codigo) {
             <div class="elemento-carrusel">
@@ -50,7 +68,6 @@
             </div>
           }
         </div>
-
         <button
           type="button"
           class="flecha-carrusel derecha"
@@ -65,10 +82,12 @@
       <i class="bi bi-search display-3 text-secondary"></i>
       <h3 class="fw-bold mt-3">No encontramos productos</h3>
       <p class="text-secondary">Intenta buscar con otro nombre o categoría.</p>
+      <button type="button" class="btn btn-primary mt-2" (click)="limpiarBusqueda()">
+        Ver todos los productos
+      </button>
     </div>
   }
 </section>
-
 <!-- Botón flotante del carrito -->
 <button
   type="button"
@@ -81,11 +100,9 @@
     <span class="contador-carrito">{{ cantidadCarrito() }}</span>
   }
 </button>
-
 <!-- Panel lateral del carrito -->
 @if (carritoAbierto()) {
   <div class="carrito-overlay" (click)="cerrarCarrito()"></div>
-
   <aside class="carrito-sidebar" (click)="$event.stopPropagation()">
     <div class="carrito-header">
       <div>
@@ -94,7 +111,6 @@
         </h3>
         <small class="text-secondary">{{ cantidadCarrito() }} unidades seleccionadas</small>
       </div>
-
       <button
         type="button"
         class="btn btn-light btn-cerrar"
@@ -104,7 +120,6 @@
         <i class="bi bi-x-lg"></i>
       </button>
     </div>
-
     <div class="carrito-contenido">
       @if (carrito().length > 0) {
         @for (item of carrito(); track item.producto.codigo) {
@@ -114,11 +129,9 @@
               [alt]="item.producto.nombre"
               class="carrito-imagen"
             >
-
             <div class="carrito-info">
               <h6 class="fw-bold">{{ item.producto.nombre }}</h6>
               <p class="text-secondary small mb-1">Precio unitario: Bs. {{ item.producto.precio }}</p>
-
               <div class="controles-cantidad">
                 <button
                   type="button"
@@ -128,9 +141,7 @@
                 >
                   <i class="bi bi-dash-lg"></i>
                 </button>
-
                 <span class="cantidad-producto">{{ item.cantidad }}</span>
-
                 <button
                   type="button"
                   class="btn-cantidad"
@@ -141,13 +152,11 @@
                   <i class="bi bi-plus-lg"></i>
                 </button>
               </div>
-
               <p class="text-success fw-bold mb-0">
                 Subtotal: Bs. {{ item.producto.precio * item.cantidad }}
               </p>
               <small class="text-secondary">Stock disponible: {{ item.producto.stock }}</small>
             </div>
-
             <button
               type="button"
               class="btn btn-outline-danger btn-sm btn-eliminar"
@@ -170,14 +179,12 @@
         </div>
       }
     </div>
-
     @if (carrito().length > 0) {
       <div class="carrito-footer">
         <div class="d-flex justify-content-between mb-3">
           <span class="fw-bold fs-5">Total:</span>
           <span class="fw-bold fs-5 text-success">Bs. {{ totalCarrito() }}</span>
         </div>
-
         <button
           type="button"
           class="btn btn-outline-danger w-100 mb-2"
@@ -185,7 +192,6 @@
         >
           <i class="bi bi-trash me-2"></i>Vaciar carrito
         </button>
-
         <a
           class="btn btn-primary w-100"
           routerLink="/pedidos/nuevo"
